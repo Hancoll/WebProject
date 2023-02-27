@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  api:
+    container_name: api
+    image: api
+    build:
+      dockerfile: ./Dockerfile.debug
+    ports:
+      - 80
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    depends_on:
+      - sql-server
+  sql-server:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    volumes:
+      - sql-server-volume:/var/opt/mssql/data
+    ports:
+      - 1433
+volumes:
+  sql-server-volume:
